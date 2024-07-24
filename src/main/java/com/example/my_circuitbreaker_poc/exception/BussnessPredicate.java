@@ -12,6 +12,14 @@ public class BussnessPredicate implements Predicate<Throwable> {
   @Override
   public boolean test(Throwable throwable) {
     logger.trace("Validating circuit breaker error = " + throwable.getLocalizedMessage());
-    return true;
+
+    if(throwable instanceof MyPOCBusinessException exception){
+      if(exception.getNumber() % 2 == 0){
+        logger.trace("Number = " + exception.getNumber() + " is even, counts as error");
+        return true;
+      }
+    }
+
+    return false;
   }
 }

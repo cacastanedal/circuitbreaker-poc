@@ -2,12 +2,21 @@ spring:
   application:
     name: my-circuitbreaker-poc
 
+management:
+  endpoint:
+    health:
+      show-details: always
+  health:
+    circuitbreakers:
+      enabled: true
+
 resilience4j:
   circuitbreaker:
     configs:
       default:
         slidingWindowSize: 3
         permittedNumberOfCallsInHalfOpenState: 1
+        maxWaitDurationInHalfOpenState: 999999s
         waitDurationInOpenState: 999999s
         failureRateThreshold: 80
 
@@ -17,7 +26,6 @@ resilience4j:
         registerHealthIndicator: true
         recordFailurePredicate: com.example.my_circuitbreaker_poc.exception.BussnessPredicate
         baseConfig: default
-        waitDurationInOpenState: 5000
 
 logging:
   level:

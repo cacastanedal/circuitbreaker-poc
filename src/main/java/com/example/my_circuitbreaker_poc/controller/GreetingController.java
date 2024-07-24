@@ -1,5 +1,6 @@
 package com.example.my_circuitbreaker_poc.controller;
 
+import com.example.my_circuitbreaker_poc.exception.MyPOCBusinessException;
 import com.example.my_circuitbreaker_poc.service.GreetingService;
 import io.github.resilience4j.circuitbreaker.CallNotPermittedException;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +33,9 @@ public class GreetingController {
   }
 
   @ExceptionHandler
-  public ResponseEntity<String> handlerControllerError(NumberFormatException e){
-    return new ResponseEntity<>("Service failed", HttpStatus.BAD_REQUEST);
+  public ResponseEntity<String> handlerControllerError(MyPOCBusinessException e){
+    return new ResponseEntity<>(
+      "Service failed, 1 < " + e.getNumber(),
+      HttpStatus.BAD_REQUEST);
   }
 }
